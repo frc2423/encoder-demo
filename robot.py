@@ -9,6 +9,15 @@ class MyRobot(wpilib.SampleRobot):
         self.sd = wpilib.SmartDashboard
         self.sensor = wpilib.AnalogInput(0)
     
+    def getDegrees(self):
+        value = self.sensor.getVoltage()
+        if value > 4.7:
+            value = 4.7
+        elif value < 0:
+            value = 0
+
+        return value * (360.0/4.7)
+
     def disabled(self):
         
         tm = wpilib.Timer()
@@ -17,9 +26,9 @@ class MyRobot(wpilib.SampleRobot):
         while self.isDisabled():
             
             if tm.hasPeriodPassed(0.1):
-                v = self.sensor.getVoltage()
-                print("Voltage", v)
-                self.sd.putDouble('sensor', self.sensor.getVoltage())
+                d = self.getDegrees()
+                print("Degrees", d)
+                self.sd.putDouble('sensorDegrees', d)
             
             wpilib.Timer.delay(0.020)
 

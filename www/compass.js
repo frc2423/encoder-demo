@@ -1,15 +1,14 @@
 // Global variable
 var img = null,
 	needle = null,
-	ctx = null,
-	degrees = 0;
+	ctx = null;
 
 function clearCanvas() {
 	 // clear canvas
 	ctx.clearRect(0, 0, 200, 200);
 }
 
-function draw() {
+function draw(degrees) {
 
 	clearCanvas();
 
@@ -30,14 +29,11 @@ function draw() {
 
 	// Restore the previous drawing state
 	ctx.restore();
-
-	// Increment the angle of the needle by 5 degrees
-	degrees += 5;
 }
 
 function imgLoaded() {
 	// Image loaded event complete. Start listening
-	NetworkTables.addKeyListener('/SmartDashboard/sensor', onValueChanged, true);
+	NetworkTables.addKeyListener('/SmartDashboard/sensorDegrees', onValueChanged, true);
 }
 
 function onRobotConnection(connected) {
@@ -45,13 +41,7 @@ function onRobotConnection(connected) {
 }
 
 function onValueChanged(key, value, isNew) {
-  if (value > 4.7)
-		value = 4.7;
-	else if (value < 0)
-		value = 0;
-		
-	degrees = value * (360.0/4.7);
-	draw();
+	draw(value);
 }
 
 function init() {
